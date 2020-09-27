@@ -1,5 +1,7 @@
 # Django Oscar GraphQl
 
+[![Documentation Status](https://readthedocs.org/projects/django-oscar-graphql/badge/?version=latest)](https://django-oscar-graphql.readthedocs.io/en/latest/?badge=latest)
+
 This package provides a GraphQl API for [django_oscar](https://github.com/django-oscar/django-oscar).
 
 ## Usage
