@@ -2,6 +2,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 from oscar.core.loading import get_model, get_class
+from django.conf import settings
 
 Product = get_model('catalogue', 'Product')
 Selector = get_class("partner.strategy", "Selector")
@@ -44,11 +45,14 @@ class ProductType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    products = graphene.List(ProductType)
+    products = graphene.List(
+        ProductType, offset=graphene.Int(), limit=graphene.Int())
     product_by_id = graphene.Field(ProductType, id=graphene.String())
 
-    def resolve_products(root, info):
-        return Product.objects.all()
+    def resolve_products(root, info, offset=0,
+                         limit=getattr(settings,
+                                       'OSCAR_GRAPHQL_DEFAULT_LIMIT', 10)):
+        return Product.objects.all()[offset:offset+limit]
 
     def resolve_product_by_id(root, info, id):
         return Product.objects.get(id=id)
